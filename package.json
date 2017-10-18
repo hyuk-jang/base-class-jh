@@ -1,0 +1,27 @@
+{
+  "name": "base-class-jh",
+  "version": "1.0.0",
+  "description": "npm publish test",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyuk-jang/base-class-jh.git"
+  },
+  "keywords": [
+    "base-class"
+  ],
+  "author": "j.hyuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hyuk-jang/base-class-jh/issues"
+  },
+  "homepage": "https://github.com/hyuk-jang/base-class-jh#readme",
+  "dependencies": {
+    "serialport": "^5.0.0",
+    "event-to-promise": "^0.8.0",
+    "underscore": "^1.8.3"
+  }
+}
