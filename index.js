@@ -6,6 +6,8 @@ const SmSocketServer = require('./SmSocketServer');
 const SocketClient = require('./SocketClient');
 const SocketServer = require('./SocketServer');
 
+const db = require('./db');
+
 
 module.exports = {
   SerialClient,
@@ -14,4 +16,5 @@ module.exports = {
   SmSocketServer,
   SocketClient,
   SocketServer,
+  db,
 }
