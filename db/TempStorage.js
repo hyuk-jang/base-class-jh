@@ -32,7 +32,7 @@ class TempStorage {
     if (_.isEmpty(findSubmitObj)) {
       this.mainStorage.push(submitObj);
     } else {
-      throws `중복 "${uniqueKey}"가 존재합니다`;
+      throw `중복 "${uniqueKey}"가 존재합니다`;
     }
 
     return this.processStorageForQuery(submitObj, uniqueKey, updateKey);
