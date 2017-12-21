@@ -5,6 +5,7 @@ const SmSocketClient = require('./SmSocketClient');
 const SmSocketServer = require('./SmSocketServer');
 const SocketClient = require('./SocketClient');
 const SocketServer = require('./SocketServer');
+const Converter = require('./Converter');
 
 const db = require('./db');
 
@@ -17,4 +18,5 @@ module.exports = {
   SocketClient,
   SocketServer,
   db,
+  Converter,
 }
