@@ -130,7 +130,7 @@ class Converter extends EventEmitter {
    * Ascii Char To Ascii Hex
    */
   makeMsg2Buffer() {
-    BU.CLI(arguments)
+    // BU.CLI(arguments)
     this.resultMakeMsg2Buffer = [];
     for (let index in arguments) {
       if (Array.isArray(arguments[index])) {
@@ -152,7 +152,7 @@ class Converter extends EventEmitter {
    * @param {Array} arr Array<Buffer, String, Number, Array> 가능
    */
   _convertArray2Buffer(arr) {
-    BU.CLI(arr)
+    // BU.CLI(arr)
     if (Array.isArray(arr)) {
       arr.forEach(element => {
         if (Array.isArray(element)) {
