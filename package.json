@@ -1,6 +1,6 @@
 {
   "name": "base-class-jh",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "npm publish test",
   "main": "index.js",
   "scripts": {
@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/hyuk-jang/base-class-jh#readme",
   "dependencies": {
-    "serialport": "^5.0.0",
+    "base-util-jh": "^1.0.7",
     "event-to-promise": "^0.8.0",
-    "underscore": "^1.8.3",
-    "base-util-jh": "^1.0.7"
+    "serialport": "^6.0.4",
+    "underscore": "^1.8.3"
   }
 }
