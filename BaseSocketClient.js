@@ -1,8 +1,9 @@
 const net = require('net');
 const EventEmitter = require('events');
 const eventToPromise = require('event-to-promise');
+const classModule = require('./classModule')
 
-class SocketClient extends EventEmitter {
+class BaseSocketClient extends EventEmitter {
   constructor(port, host) {
     super();
     this.port = port;
@@ -14,15 +15,20 @@ class SocketClient extends EventEmitter {
   _initSocket(client) {
   }
 
-  _onData(data) {
-    return this.emit('dataBySocketClient', null, data);
+  /**
+   * Buffer 분석하여 데이터 돌려줌
+   * @param {Buffer} bufferData
+   * @return {EventEmitter} Buffer
+   */
+  _onData(bufferData) {
+    return this.emit('onDataBySocketClient', null, classModule.resolveResponseMsgForTransfer(bufferData));
   }
 
   _onUsefulData(err, data) {
   }
 
   _onClose(err) {
-    return this.emit('disconnectedSocketClient', err);
+    return this.emit('onCloseBySocketClient', err);
   }
 
 
@@ -42,17 +48,14 @@ class SocketClient extends EventEmitter {
     this.client = net.createConnection(this.port, this.host);
     this._initSocket(this.client);
 
-    this.client.on('data', data => {
+    this.client.on('data', bufferData => {
       // BU.CLI('@@@@@@@@@@@@@@', data.toString());
-      this.client = {};
-      this._onData(data);
-      // this.client.smBuffer.addBuffer(data);
+      this._onData(bufferData);
     });
 
     this.client.on('close', error => {
       this.client = {};
       this._onClose(error);
-      // this.controller.emit('disconnectedInverter', this.port);
     })
 
     this.client.on('end', () => {
@@ -64,13 +67,10 @@ class SocketClient extends EventEmitter {
     this.client.on('error', error => {
       this.client = {};
       this._onClose(error);
-      // BU.CLI('error')
-      // this.socketClient = {};
-      // this.controller.emit('disconnectedInverter');
     })
     await eventToPromise.multi(this.client, ['connect', 'connection', 'open'], ['close, error'])
     return this.client;
   }
 }
 
-module.exports = SocketClient;
+module.exports = BaseSocketClient;
