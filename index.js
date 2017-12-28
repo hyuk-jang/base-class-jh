@@ -7,6 +7,11 @@ const SocketClient = require('./SocketClient');
 const SocketServer = require('./SocketServer');
 const Converter = require('./Converter');
 
+// Socket
+const socket = require('./socket')
+// Serial
+const serial = require('./serial')
+
 
 const db = require('./db');
 const classModule = require('./classModule');
@@ -21,7 +26,9 @@ module.exports = {
   SocketServer,
   Converter,
   db,
-  classModule
+  classModule,
+  socket,
+  serial
 }
 
 // if __main process
