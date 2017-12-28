@@ -60,9 +60,7 @@ class Converter extends EventEmitter {
    * @returns {Number} Dec
    */
   convertBuffer2Char2Dec(buffer) {
-    // BU.CLI(buffer)
     let str = buffer.toString();
-    // BU.CLI(Number(this.converter().hex2dec(str)))
     return Number(this.converter().hex2dec(str));
   }
 

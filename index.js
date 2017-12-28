@@ -7,7 +7,9 @@ const SocketClient = require('./SocketClient');
 const SocketServer = require('./SocketServer');
 const Converter = require('./Converter');
 
+
 const db = require('./db');
+const classModule = require('./classModule');
 
 
 module.exports = {
@@ -17,6 +19,18 @@ module.exports = {
   SmSocketServer,
   SocketClient,
   SocketServer,
-  db,
   Converter,
+  db,
+  classModule
+}
+
+// if __main process
+if (require !== undefined && require.main === module) {
+  let hi = classModule.makeRequestMsgForTransfer('hi');
+  console.log('hi', hi)
+  
+  let ih = classModule.resolveResponseMsgForTransfer(hi)
+  console.log('ih', ih.toString())
+
+
 }
