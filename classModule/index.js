@@ -40,6 +40,7 @@ module.exports = {
    * @return {Buffer}
    */
   resolveResponseMsgForTransfer: (buf) => {
+    // BU.CLI(buf)
     const converter = new Converter();
 
     let indexSTX = buf.indexOf(0x02)
@@ -47,8 +48,10 @@ module.exports = {
     let indexEOT = buf.indexOf(0x04)
     let crcValue = buf.slice(indexETX + 1, indexEOT)
     let bufBody = buf.slice(0, indexETX + 1)
-
+    // BU.CLI(bufBody)
+    
     let baseCrcValue = crc.crc16xmodem(bufBody.toString())
+    // BU.CLI(baseCrcValue)
 
     if (crcValue.toString() === baseCrcValue.toString(16)) {
       return buf.slice(indexSTX + 1, indexETX)

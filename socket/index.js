@@ -1,7 +1,7 @@
 
 
-const SocketClient = rquire('./SocketClient.js')
-const SocketServer = rquire('./SocketServer.js')
+const SocketClient = require('./SocketClient.js')
+const SocketServer = require('./SocketServer.js')
 
 module.exports = {
   SocketClient,

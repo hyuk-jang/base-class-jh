@@ -1,6 +1,6 @@
 
 
-const SerialClient = rquire('./SerialClient.js')
+const SerialClient = require('./SerialClient.js')
 
 module.exports = {
   SerialClient

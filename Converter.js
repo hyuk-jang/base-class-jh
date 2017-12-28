@@ -18,7 +18,7 @@ class Converter extends EventEmitter {
   get STX() {
     return Buffer.from([0x02]);
   }
-  
+
   get ETX() {
     return Buffer.from([0x03]);
   }
@@ -35,7 +35,7 @@ class Converter extends EventEmitter {
     return Buffer.from([0x06]);
   }
 
-  
+
 
   pad(n, width) {
     n = n + '';
@@ -131,14 +131,25 @@ class Converter extends EventEmitter {
     // BU.CLI(arguments)
     this.resultMakeMsg2Buffer = [];
     for (let index in arguments) {
-      if (Array.isArray(arguments[index])) {
-        this._convertArray2Buffer(arguments[index])
-      } else if (typeof arguments[index] === 'string') {
-        this.resultMakeMsg2Buffer.push(Buffer.from(arguments[index]));
-      } else if (typeof arguments[index] === 'number') {
-        return this.resultMakeMsg2Buffer.push(Buffer.from(this.converter().dec2hex(arguments[index]), 'hex'));
+      let arg = arguments[index];
+      // BU.CLIS(typeof arg)
+      if (Array.isArray(arg)) {
+        this._convertArray2Buffer(arg)
+      } else if (typeof arg === 'string') {
+        this.resultMakeMsg2Buffer.push(Buffer.from(arg));
+      } else if (typeof arg === 'number') {
+        return this.resultMakeMsg2Buffer.push(Buffer.from(this.converter().dec2hex(arg), 'hex'));
+      } else if (typeof arg === 'object') {
+        if (Buffer.isBuffer(arg)) {
+          return this.resultMakeMsg2Buffer.push(arg);
+        } else if (arg.type === 'Buffer') {
+          return this.resultMakeMsg2Buffer.push(Buffer.from(arg))
+        } else {
+          let strMsg = JSON.stringify(arg)
+          this.resultMakeMsg2Buffer.push(Buffer.from(strMsg));
+        }
       } else {
-        this.resultMakeMsg2Buffer.push(arguments[index]);
+        this.resultMakeMsg2Buffer.push(arg);
       }
     }
     // BU.CLI(this.resultMakeMsg2Buffer)
@@ -161,7 +172,8 @@ class Converter extends EventEmitter {
           } else if (element.type === 'Buffer') {
             return this.resultMakeMsg2Buffer.push(Buffer.from(element))
           } else {
-            throw TypeError('Buffer에 문제 발생')
+            let strMsg = JSON.stringify(element)
+            this.resultMakeMsg2Buffer.push(Buffer.from(strMsg));
           }
         } else if (typeof element === 'number') { // Dec
           // BU.CLI(element)

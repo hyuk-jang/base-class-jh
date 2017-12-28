@@ -1,7 +1,7 @@
 const net = require('net');
 const EventEmitter = require('events');
 const eventToPromise = require('event-to-promise');
-const classModule = require('./classModule')
+const classModule = require('../classModule')
 
 class BaseSocketClient extends EventEmitter {
   constructor(port, host) {
@@ -21,14 +21,14 @@ class BaseSocketClient extends EventEmitter {
    * @return {EventEmitter} Buffer
    */
   _onData(bufferData) {
-    return this.emit('onDataBySocketClient', null, classModule.resolveResponseMsgForTransfer(bufferData));
+    return this.emit('data', null, classModule.resolveResponseMsgForTransfer(bufferData));
   }
 
   _onUsefulData(err, data) {
   }
 
   _onClose(err) {
-    return this.emit('onCloseBySocketClient', err);
+    return this.emit('close', err);
   }
 
 

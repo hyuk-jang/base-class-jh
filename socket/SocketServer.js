@@ -15,41 +15,42 @@ class SocketServer extends EventEmitter {
   _initSocket(socket) {
   }
 
-  _onData(data, socket) {
-    return this.emit('dataBySocketServer', null, data);
+  _onData(bufferData, connectedClient) {
+    return this.emit('data', null, bufferData, connectedClient);
   }
 
-  _onUsefulData(err, data, socket) {
+  _onUsefulData(err, data, connectedClient) {
   }
 
-  _onClose(socket) {
+  _onClose(err, connectedClient) {
+    return this.emit('close', err, connectedClient);
   }
 
   async createServer() {
     // BU.CLI('CreateServer')
-    let socketServer = net.createServer(socket => {
+    let socketServer = net.createServer(connectedClient => {
       // BU.CLI('New Inverter Client Connected');
-      this._initSocket(socket);
+      this._initSocket(connectedClient);
 
-      this.clientList.push(socket);
+      this.clientList.push(connectedClient);
 
-      socket.on('data', (data) => {
-        // BU.CLI('data', data)
-        this._onData(data, socket);
+      connectedClient.on('data', (bufferData) => {
+        // BU.CLI('bufferData', bufferData)
+        this._onData(bufferData, connectedClient);
       });
 
-      socket.on('close', (msg) => {
+      connectedClient.on('close', (err) => {
         this.clientList = this.clientList.filter((client, index) => {
-          return client !== socket;
+          return client !== connectedClient;
         })
-        this._onClose(socket);
+        this._onClose(err, connectedClient);
 
-        socket.destroy();
+        connectedClient.destroy();
       });
 
-      socket.on('error', err => {
+      connectedClient.on('error', err => {
         // BU.CLI('Socket.js : 소켓에러가 발생했습니다.', err);
-        socket.emit('close');
+        connectedClient.emit('close');
       });
     });
 
@@ -58,8 +59,8 @@ class SocketServer extends EventEmitter {
       this.port++;
       this.tryCount++;
 
-      // 20번 포트를 증가시켜도 안되면 포기
-      if (this.tryCount > 20) {
+      // 50번 포트를 증가시켜도 안되면 포기
+      if (this.tryCount > 50) {
         throw Error('tryCountFull');
       }
       socketServer.listen(this.port);
@@ -70,7 +71,6 @@ class SocketServer extends EventEmitter {
     })
 
     let result = await eventToPromise.multi(socketServer, ['listening'], ['failed'])
-    // BU.CLI('????',result)
     return this.port;
   }
 }
