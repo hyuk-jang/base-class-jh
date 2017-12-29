@@ -138,12 +138,12 @@ class Converter extends EventEmitter {
       } else if (typeof arg === 'string') {
         this.resultMakeMsg2Buffer.push(Buffer.from(arg));
       } else if (typeof arg === 'number') {
-        return this.resultMakeMsg2Buffer.push(Buffer.from(this.converter().dec2hex(arg), 'hex'));
+        this.resultMakeMsg2Buffer.push(Buffer.from(this.converter().dec2hex(arg), 'hex'));
       } else if (typeof arg === 'object') {
         if (Buffer.isBuffer(arg)) {
-          return this.resultMakeMsg2Buffer.push(arg);
+          this.resultMakeMsg2Buffer.push(arg);
         } else if (arg.type === 'Buffer') {
-          return this.resultMakeMsg2Buffer.push(Buffer.from(arg))
+          this.resultMakeMsg2Buffer.push(Buffer.from(arg))
         } else {
           let strMsg = JSON.stringify(arg)
           this.resultMakeMsg2Buffer.push(Buffer.from(strMsg));
