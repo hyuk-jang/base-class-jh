@@ -16,12 +16,12 @@ class BaseSocketClient extends EventEmitter {
   }
 
   /**
-   * Buffer 분석하여 데이터 돌려줌
+   * Buffer 데이터 돌려줌
    * @param {Buffer} bufferData
    * @return {EventEmitter} Buffer
    */
   _onData(bufferData) {
-    return this.emit('data', null, classModule.resolveResponseMsgForTransfer(bufferData));
+    return this.emit('data', bufferData);
   }
 
   _onUsefulData(err, data) {
