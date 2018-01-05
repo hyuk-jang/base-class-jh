@@ -1,3 +1,5 @@
+const BU = require('base-util-jh')
+global.BU = BU;
 
 const SerialClient = require('./SerialClient');
 const SmBuffer = require('./SmBuffer');

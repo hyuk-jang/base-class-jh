@@ -54,12 +54,12 @@ class SocketServer extends EventEmitter {
     });
 
     socketServer.on('error', err => {
-      BU.log('Socket Server Port Used ', this.port)
+      // BU.log('Socket Server Port Used ', this.port)
       this.port++;
       this.tryCount++;
 
-      // 20번 포트를 증가시켜도 안되면 포기
-      if (this.tryCount > 20) {
+      // 100번 포트를 증가시켜도 안되면 포기
+      if (this.tryCount > 100) {
         throw Error('tryCountFull');
       }
       socketServer.listen(this.port);
