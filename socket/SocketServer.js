@@ -55,19 +55,19 @@ class SocketServer extends EventEmitter {
     });
 
     socketServer.on('error', err => {
-      BU.log('Socket Server Port Used ', this.port)
+      // BU.log('Socket Server Port Used ', this.port)
       this.port++;
       this.tryCount++;
 
-      // 50번 포트를 증가시켜도 안되면 포기
-      if (this.tryCount > 50) {
-        throw Error('tryCountFull');
+      // 100번 포트를 증가시켜도 안되면 포기
+      if (this.tryCount > 100) {
+        throw Error('tryCountFull' + this.tryCount);
       }
       socketServer.listen(this.port);
     })
 
     socketServer.listen(this.port, () => {
-      BU.log('Socket Server Is Running ', this.port);
+      BU.log('Socket Server Listen --> ', this.port);
     })
 
     let result = await eventToPromise.multi(socketServer, ['listening'], ['failed'])
