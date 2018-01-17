@@ -1,18 +1,21 @@
 const net = require('net');
 const EventEmitter = require('events');
 const eventToPromise = require('event-to-promise');
-const classModule = require('../classModule')
-
-class BaseSocketClient extends EventEmitter {
-  constructor(port, host) {
+/** Class Socket 접속 클라이언트 클래스 */
+class SocketClient extends EventEmitter {
+  /**
+   * Socket Client 접속 설정 정보
+   * @param {{port: number, ip: string|undefinded}} port Socket Port
+   */
+  constructor(config = {port, host}) {
     super();
-    this.port = port;
-    this.host = host;
+    this.port = config.port;
+    this.host = config.host || 'localhost';
 
     this.client = {};
   }
 
-  _initSocket(client) {
+  _init(client) {
   }
 
   /**
@@ -24,38 +27,26 @@ class BaseSocketClient extends EventEmitter {
     return this.emit('data', bufferData);
   }
 
-  _onUsefulData(err, data) {
+  _onClose() {
+    return this.emit('close');
   }
 
-  _onClose(err) {
-    return this.emit('close', err);
+  _onError(err) {
+    return this.emit('error', err);
   }
 
 
-  async connect(port, host) {
-    // BU.CLI(port, host)
-    // BU.CLI('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-    if (port !== 0 && port != null) {
-      this.port = port;
-    }
-
-    if (host !== '' && host != null) {
-      this.host = host ? host : 'localhost';
-    }
-    this.host = this.host || 'localhost';
-    
-
+  async connect() {
     this.client = net.createConnection(this.port, this.host);
-    this._initSocket(this.client);
+    this._init(this.client);
 
     this.client.on('data', bufferData => {
-      // BU.CLI('@@@@@@@@@@@@@@', data.toString());
       this._onData(bufferData);
     });
 
-    this.client.on('close', error => {
+    this.client.on('close', () => {
       this.client = {};
-      this._onClose(error);
+      this._onClose();
     })
 
     this.client.on('end', () => {
@@ -65,12 +56,11 @@ class BaseSocketClient extends EventEmitter {
     });
 
     this.client.on('error', error => {
-      this.client = {};
-      this._onClose(error);
+      this._onError(error);
     })
     await eventToPromise.multi(this.client, ['connect', 'connection', 'open'], ['close, error'])
     return this.client;
   }
 }
 
-module.exports = BaseSocketClient;
+module.exports = SocketClient;

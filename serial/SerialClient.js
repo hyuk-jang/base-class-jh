@@ -1,47 +1,59 @@
 const serialport = require('serialport');
-const eventToPromise = require('event-to-promise');
-
 const EventEmitter = require('events');
-
+const eventToPromise = require('event-to-promise');
+/** Class Serial Port 접속 클라이언트 클래스 */
 class SerialClient extends EventEmitter {
-  constructor(deviceInfo = {
+  /**
+   * Serial Port 객체를 생성하기 위한 설정 정보
+   * @param {{port: string, baud_rate: number, target_name: string}} config {port, baud_rate, raget_name}
+   */
+  constructor(config = {
     port,
     baud_rate,
     target_name
   }) {
     super();
-    this.serialClient = {};
-    this.serialInfo = deviceInfo;
+    this.client = {};
+    this.port = config.port;
+    this.baud_rate = config.baud_rate;
+    this.target_name = config.target_name;
   }
 
-  init() {
-
+  _init(client) {
   }
 
-  processData() {
+  _onData(bufferData) {
+    return this.emit('data', bufferData);
+  }
 
+  _onClose() {
+    return this.emit('close');
+  }
+
+  _onError(err) {
+    return this.emit('error', err);
   }
 
   async connect() {
-    this.serialClient = new serialport(this.serialInfo.port, {
-      baudrate: this.serialInfo.baud_rate,
+    this.client = new serialport(this.port, {
+      baudRate: this.baud_rate,
     });
 
-    this.serialClient.on('data', (data) => {
-      this.processData(data);
-    })
-
-    this.serialClient.on('close', err => {
-      BU.CLI('시리얼 Close');
+    this.client.on('data',  bufferData => {
+      this._onData(bufferData);
     });
 
-    this.serialClient.on('error', err => {
-      BU.CLI('Error Occur : ' + this.serialInfo.target_name, err);
+    this.client.on('close', err => {
+      this.client = {};
+      this._onClose(err);
     });
 
-    await eventToPromise.multi(this.serialClient, ['open'], ['error', 'close']);
-    BU.CLI('Serial Connect Success ', this.serialInfo.target_name)
-    return this.serialClient;
+    this.client.on('error', error => {
+      this._onError(error);
+    });
+
+    await eventToPromise.multi(this.client, ['open'], ['error', 'close']);
+    return this.client;
   }
 }
 module.exports = SerialClient;
