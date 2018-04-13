@@ -1,15 +1,13 @@
 const net = require('net');
 const EventEmitter = require('events');
 const eventToPromise = require('event-to-promise');
-const BU = require('base-util-jh').baseUtil;
-
 /** Class Socket 접속 클라이언트 클래스 */
 class SocketClient extends EventEmitter {
   /**
    * Socket Client 접속 설정 정보
-   * @param {{port: number, host: string}} config Socket Port
+   * @param {{port: number, ip: string|undefinded}} port Socket Port
    */
-  constructor(config) {
+  constructor(config = {port, host}) {
     super();
     this.port = config.port;
     this.host = config.host || 'localhost';
@@ -60,7 +58,7 @@ class SocketClient extends EventEmitter {
     this.client.on('error', error => {
       this._onError(error);
     })
-    await eventToPromise.multi(this.client, ['connect', 'connection', 'open'], ['close', 'error'])
+    await eventToPromise.multi(this.client, ['connect', 'connection', 'open'], ['close, error'])
     return this.client;
   }
 }

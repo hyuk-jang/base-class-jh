@@ -1,15 +1,17 @@
 const serialport = require('serialport');
 const EventEmitter = require('events');
 const eventToPromise = require('event-to-promise');
-const BU = require('base-util-jh').baseUtil;
-
 /** Class Serial Port 접속 클라이언트 클래스 */
 class SerialClient extends EventEmitter {
   /**
    * Serial Port 객체를 생성하기 위한 설정 정보
    * @param {{port: string, baud_rate: number, target_name: string}} config {port, baud_rate, raget_name}
    */
-  constructor(config) {
+  constructor(config = {
+    port,
+    baud_rate,
+    target_name
+  }) {
     super();
     this.client = {};
     this.port = config.port;

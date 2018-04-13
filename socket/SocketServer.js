@@ -1,7 +1,6 @@
 const net = require('net');
 const EventEmitter = require('events');
 const eventToPromise = require('event-to-promise');
-const BU = require('base-util-jh').baseUtil;
 
 class SocketServer extends EventEmitter {
   constructor(port) {
