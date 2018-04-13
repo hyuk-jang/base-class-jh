@@ -1,12 +1,7 @@
 const BU = require('base-util-jh')
 global.BU = BU;
 
-const SerialClient = require('./SerialClient');
 const SmBuffer = require('./SmBuffer');
-const SmSocketClient = require('./SmSocketClient');
-const SmSocketServer = require('./SmSocketServer');
-const SocketClient = require('./SocketClient');
-const SocketServer = require('./SocketServer');
 const Converter = require('./Converter');
 
 // Socket
@@ -20,12 +15,7 @@ const classModule = require('./classModule');
 
 
 module.exports = {
-  SerialClient,
   SmBuffer,
-  SmSocketClient,
-  SmSocketServer,
-  SocketClient,
-  SocketServer,
   Converter,
   db,
   classModule,
